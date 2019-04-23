@@ -34,12 +34,14 @@ def last_name_check(nput):
     return ""
 def user_name_check(user_name):
     if check_spaces(user_name) == "error":
-        return "Field must not contain spaces!"
+        return "Username must not contain spaces!"
     if check_length(user_name) < 3 or check_length(user_name) > 20:
         return "Field must be between 3 and 20 characters!"
     return ""
 
 def email_address_check(email_address):
+    if email_address == "":
+        return ""
     A1 = 0
     D1 = 0
     if check_spaces(email_address) == "error":
@@ -49,12 +51,17 @@ def email_address_check(email_address):
             A1 = A1 + 1
         if i == ".":
             D1 = D1 + 1
-    if A1 == 1 and D1 == 1:
-        return ""
-    else:
-        return "Invalid email address!" 
+    if D1 < 1 :
+        return "There was not a period in the address submitted!"
+    if D1 != 1 : 
+        return "Invalid number of periods detected in address submitted!"
+    if A1 < 1 :
+        return "There was not an '@' in the address submitted!"
+    if A1 != 1 :
+        return "Invalid number of '@'s detected in address submitted!" 
     if check_length(email_address) < 3:
         return "Email must be more than three characters!"
+    return ""
      #check for single '.' and '@' symbols
 
 def password_check(password):
@@ -75,9 +82,7 @@ def field_empty(field):
         return True
     return False
     #check for empty field
-@app.route('/success')
-def successful_login():
-    return render_template('success.html')
+
 
 @app.route('/', methods=['POST'])
 def signup_verif():
@@ -94,12 +99,16 @@ def signup_verif():
     is_email_address_confirmed = email_address_check(email_address)
     user_name_valid_message = user_name_check(user_name)
     all_errors = [firsname_valid_message, lasname_valid_message, password_valid_message, pasword_confirm_message, is_email_address_confirmed, user_name_valid_message]
-
     for error_text in all_errors:
         if error_text != "":
             return render_template('signup.html', first_name_error = firsname_valid_message, last_name_error = lasname_valid_message, user_name_error= user_name_valid_message,  password_error = password_valid_message, confirm_password_error = pasword_confirm_message, email_address_error = is_email_address_confirmed)
-    return redirect('/success')
+    user = request.form['username']
+    return redirect('/success?user=' + user)
 
+@app.route('/success')
+def successful_login():
+    user = request.args.get('user')
+    return render_template('success.html', current_user = user)
         
     
 app.run()
