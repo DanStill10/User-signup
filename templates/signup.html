@@ -7,11 +7,17 @@
 <form action="/" method="POST">
     <h1>User Signup</h1>
         <input type="text" name="first_name" placeholder="First name">
+        <p class="error">{{first_name_error}}</p>
         <input type="text"  name="last_name" placeholder="Last name">
+        <p class="error">{{last_name_error}}</p>
         <input type="text" name="email_address" placeholder="Email address (optional)">
+        <p class="error">{{email_address_error}}</p>
         <input type="text" name="username" placeholder="Username">
+        <p class="error">{{username_error}}</p>
         <input type="password" name="password" placeholder="Password">
-        <input type="password" name="confirm_Password" placeholder="Confirm password"> 
+        <p class="error">{{password_error}}</p>
+        <input type="password" name="confirm_password" placeholder="Confirm password"> 
+        <p class="error">{{confirm_password_error}}</p>
         <input type="submit" value="Confirm">
 </form>
 </html>
